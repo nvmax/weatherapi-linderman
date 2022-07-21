@@ -1,11 +1,3 @@
-$(init);
-
-function init() {
-    // 
-    
-}
-
-
 
 // https://openweathermap.org/api/one-call-api
 
@@ -32,26 +24,21 @@ $(".btn-info").on("click", function(event) {
 
 
 
-// $("#search-input").on("keyup", function(event) {
-//     event.preventDefault();
-//     var city = $("#search-input").val();
-//     logCity(city);
-
-// }
-// )
-
-
-
-
-//function to log city name to local storage every time btn-info is clicked and append to list of cities
+//function to log city name to local storage every time btn-info is clicked and append to list of cities 
+// need function to see if its already in the list and if not add it
 function logCity(city) {
     var cityList = JSON.parse(localStorage.getItem("cityList"));
     if (cityList === null) {
         cityList = [];
     }
-    cityList.push(city);
-    localStorage.setItem("cityList", JSON.stringify(cityList));
+    if (cityList.indexOf(city) === -1) {
+        cityList.push(city);
+        localStorage.setItem("cityList", JSON.stringify(cityList));
+    }
+    console.log(cityList);
+    displayCities(cityList);
 }
+
 
 
 // function to parse data from local storage city list
