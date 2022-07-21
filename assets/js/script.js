@@ -1,4 +1,6 @@
 
+
+
 // https://openweathermap.org/api/one-call-api
 
 // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
@@ -55,7 +57,33 @@ var getcities =() => {
         }
     }else {
         // need to get city written fom local storage
+        // using info from scott casey from class, still not working
+    
+     var lastcityitem = "city-list"+(localStorage.length-1);
+     lastCity = localStorage.getItem(lastcityitem);
+
+     $("#search-input").attr("value", lastCity);
+
+     for (let i=0; i<localStorage.length; i++) {
+        var city  = localStorage.getItem("city-list"+i);
+        var cityEL;
+    if (loadedcity === null) {
+        loadedcity = lastCity;
+    } 
+    if (city === loadedcity) {
+        cityEL = $("<ul class='list-group-item active'>"+city+"</ul>");
+    } else {
+        cityEL = $("<ul class='list-group-item'>"+city+"</ul>");
     }
+    $("#city-list").append(cityEL);
+        }
+    }   
+}
+getcities();
+
+
+        
+     
 
    
 
