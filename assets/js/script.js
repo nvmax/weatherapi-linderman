@@ -9,6 +9,7 @@
 var weatherAPI= "https://api.openweathermap.org/data/2.5/weather?q="
 var weatherAPIKey = "&appid=d12e589f389b69a0b72ac61ad3e26448"
 var savedCity ="";
+var loadedcity = "";
 console.log(weatherAPI)
 
 
@@ -19,7 +20,7 @@ console.log(weatherAPI)
 $(".btn-info").on("click", function(event) {
     event.preventDefault();
     var city = $("#search-input").val();
-    console.log(city);
+    
     logCity(city);
     getWeather(city);
 }
@@ -29,6 +30,7 @@ $(".btn-info").on("click", function(event) {
 
 //function to log city name to local storage every time btn-info is clicked and append to list of cities 
 // need function to see if its already in the list and if not add it
+// may need to break out each cit into its own list item in storage
 function logCity(city) {
     var cityList = JSON.parse(localStorage.getItem("cityList"));
     if (cityList === null) {
@@ -58,27 +60,53 @@ var getcities =() => {
     }else {
         // need to get city written fom local storage
         // using info from scott casey from class, still not working
-    
-     var lastcityitem = "city-list"+(localStorage.length-1);
-     lastCity = localStorage.getItem(lastcityitem);
-
-     $("#search-input").attr("value", lastCity);
-
-     for (let i=0; i<localStorage.length; i++) {
-        var city  = localStorage.getItem("city-list"+i);
-        var cityEL;
-    if (loadedcity === null) {
-        loadedcity = lastCity;
-    } 
-    if (city === loadedcity) {
-        cityEL = $("<ul class='list-group-item active'>"+city+"</ul>");
-    } else {
-        cityEL = $("<ul class='list-group-item'>"+city+"</ul>");
-    }
-    $("#city-list").append(cityEL);
+        // issue maybe from using city-list instead of key of storagelist
+        // rewrote section below to parse each item from citylist
+        var cityList = JSON.parse(localStorage.getItem("cityList"));
+        console.log(cityList); // (3) ['Las Vegas', 'Minneapolis ', 'salt lake city']
+        for (var i = 0; i < cityList.length; i++) {
+            var city = cityList[i];
+            console.log(city); // each are listed individually
+            var listItem = $("<ul>");
+            listItem.text(city);
+            listItem.attr("class", "list-group-item");
+            listItem.attr("id", "city-save");
+            $("#city-save").append(listItem); // works but not in button format
         }
-    }   
+    }
 }
+
+
+
+
+
+
+    
+    //  var lastcityitem = "cityList"+(localStorage.length-1);
+    //  console.log(lastcityitem); // logging citylist0 I think it is due to the way the array is stored in local storage instead of breaking each one out
+    //  lastCity = localStorage.getItem(lastcityitem);
+    //  console.log(lastCity); // logging null 
+
+    //  $("#search-input").attr("value", lastCity);
+    //     console.log(lastCity); // null 
+
+    //  for (let i=0; i < localStorage.length; i++) {
+    //     var city  = localStorage.getItem("cityList"+i);
+    //     var cityEl;
+    //     console.log(city); // null 
+    //     console.log(cityEl); // undefined
+    // if (loadedcity === "") {
+    //     loadedcity = lastCity;
+    // } 
+    // if (city === loadedcity) {
+    //     cityEl = $("<ul class='list-group-item active'>"+city+"</ul>");
+    // } else {
+    //     cityEl = $("<ul class='list-group-item'>"+city+"</ul>");
+    // }
+    // $("#city-save").append(cityEl); // fixed this had city list instead of city save still varialbles are null.
+//         }
+//     }   
+// }
 getcities();
 
 
