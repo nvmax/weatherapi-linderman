@@ -6,6 +6,7 @@
 // weather api connection 
 var weatherAPI= "https://api.openweathermap.org/data/2.5/weather?q="
 var weatherAPIKey = "&appid=d12e589f389b69a0b72ac61ad3e26448"
+var savedCity ="";
 console.log(weatherAPI)
 
 
@@ -37,25 +38,24 @@ function logCity(city) {
     }
     console.log(cityList);
     displayCities(cityList);
-}
+}  // works - checked shows ["Las Vegas", "Minneapolis "] 0: "Las Vegas" 1: "Minneapolis " used Las Vegas twice but only recorded once
+
 
 
 
 // function to parse data from local storage city list
-function getCityList() {
-    var cityList = JSON.parse(localStorage.getItem("cityList"));
-    if (cityList === null) {
-        cityList = [];
+var getcities =() => {
+    $("#city-list").empty();
+    // if local storage is empty, return empty array
+    if (localStorage.length === 0) {
+        if (savedCity){
+            $("search-input").attr("value", savedCity);
+        } else {
+            $("search-input").attr("value", "Minneapolis");
+        }
+    }else {
+        // need to get city written fom local storage
     }
-    // create a button for each item in array and append to <li></li> div in html
-    for (var i = 0; i < cityList.length; i++) {
-        var button = $("<button>");
-        button.addClass("btn btn-info");
-        button.attr("data-name", cityList[i]);
-        button.text(cityList[i]);
-        $("#li").append(button);
-    }
-}
 
    
 
