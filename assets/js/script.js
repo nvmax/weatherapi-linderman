@@ -4,6 +4,7 @@
 // https://openweathermap.org/api/one-call-api
 
 // https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+// For temperature in Fahrenheit and wind speed in miles/hour, use units=imperial
 
 // weather api connection 
 var weatherAPI= "https://api.openweathermap.org/data/2.5/weather?q="
@@ -62,7 +63,7 @@ var getcities =() => {
         if (savedCity){
             $("search-input").attr("value", savedCity);
         } else {
-            $("search-input").attr("value", "Minneapolis");
+            $("search-input").attr("value", "Minneapolis"); // not working not sure why!
         }
     }else {
         // need to get city written fom local storage
@@ -90,8 +91,9 @@ getcities();
 
 
 // function to get current weather for city
+
 var getWeather = (city) => {
-    let queryURL = weatherAPI + city + weatherAPIKey;
+    let queryURL = weatherAPI + city +"&units=imperial"+ weatherAPIKey;
     console.log(queryURL); // logs https://api.openweathermap.org/data/2.5/weather?q=Las Vegas&appid=d12e589f389b69a0b72ac61ad3e26448 and shows it is requesting right.
     fetch(queryURL)
     
@@ -100,47 +102,47 @@ var getWeather = (city) => {
 })
     .then((response => {
         console.log(response);
-        // gets response -- current log
-// {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 10000, …}
-// base: "stations"
-// clouds:
-// all: 0
-// [[Prototype]]: Object
-// cod: 200
-// coord:
-// lat: 36.175
-// lon: -115.1372
-// [[Prototype]]: Object
-// dt: 1658442455
-// id: 5506956
-// main:
-// feels_like: 314.58
-// humidity: 9
-// pressure: 1008
-// temp: 317.87
-// temp_max: 318.86
-// temp_min: 316.35
-// [[Prototype]]: Object
-// name: "Las Vegas"
-// sys:
-// country: "US"
-// id: 6171
-// sunrise: 1658407141
-// sunset: 1658458472
-// type: 1
-// [[Prototype]]: Object
-// timezone: -25200
-// visibility: 10000
-// weather: Array(1)
-// 0: {id: 800, main: 'Clear', description: 'clear sky', icon: '01d'}
-// length: 1
-// [[Prototype]]: Array(0)
-// wind:
-// deg: 210
-// gust: 10.29
-// speed: 6.17
-// [[Prototype]]: Object
-// [[Prototype]]: Object
+        // gets response -- current log updated with imperial units 
+        // {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 10000, …}
+        // base: "stations"
+        // clouds:
+        // all: 0
+        // [[Prototype]]: Object
+        // cod: 200
+        // coord:
+        // lat: 36.175
+        // lon: -115.1372
+        // [[Prototype]]: Object
+        // dt: 1658445999
+        // id: 5506956
+        // main:
+        // feels_like: 106.43
+        // humidity: 9
+        // pressure: 1007
+        // temp: 112.35
+        // temp_max: 114.28
+        // temp_min: 108.82
+        // [[Prototype]]: Object
+        // name: "Las Vegas"
+        // sys:
+        // country: "US"
+        // id: 6171
+        // sunrise: 1658407141
+        // sunset: 1658458472
+        // type: 1
+        // [[Prototype]]: Object
+        // timezone: -25200
+        // visibility: 10000
+        // weather: Array(1)
+        // 0: {id: 800, main: 'Clear', description: 'clear sky', icon: '01d'}
+        // length: 1
+        // [[Prototype]]: Array(0)
+        // wind:
+        // deg: 210
+        // gust: 24.16
+        // speed: 16.11
+        // [[Prototype]]: Object
+        // [[Prototype]]: Object
     }
     )   
     )
