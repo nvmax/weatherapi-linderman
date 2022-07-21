@@ -1,0 +1,18 @@
+#header{
+
+}
+
+#search-input{
+    width: 150px;
+}
+
+.btn-info{
+    width: 150px;
+}
+
+
+.city-button{
+  border-radius: 5px;
+  
+  background-color: #17a2b8;
+}

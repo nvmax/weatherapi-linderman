@@ -67,80 +67,28 @@ var getcities =() => {
         for (var i = 0; i < cityList.length; i++) {
             var city = cityList[i];
             console.log(city); // each are listed individually
-            var listItem = $("<ul>");
-            listItem.text(city);
-            listItem.attr("class", "list-group-item");
-            listItem.attr("id", "city-save");
-            $("#city-save").append(listItem); // works but not in button format
+            // create buttons for each item in city and append to city-save <ul>
+            var cityButton = $("<button>");
+            cityButton.addClass("city-button");
+            cityButton.attr("data-name", city);
+            cityButton.text(city);
+            // change width of cityButton to fit in city-list
+            cityButton.css("width", "150px");
+            $("#city-save").append(cityButton);         
+
         }
     }
 }
 
 
-
-
-
-
-    
-    //  var lastcityitem = "cityList"+(localStorage.length-1);
-    //  console.log(lastcityitem); // logging citylist0 I think it is due to the way the array is stored in local storage instead of breaking each one out
-    //  lastCity = localStorage.getItem(lastcityitem);
-    //  console.log(lastCity); // logging null 
-
-    //  $("#search-input").attr("value", lastCity);
-    //     console.log(lastCity); // null 
-
-    //  for (let i=0; i < localStorage.length; i++) {
-    //     var city  = localStorage.getItem("cityList"+i);
-    //     var cityEl;
-    //     console.log(city); // null 
-    //     console.log(cityEl); // undefined
-    // if (loadedcity === "") {
-    //     loadedcity = lastCity;
-    // } 
-    // if (city === loadedcity) {
-    //     cityEl = $("<ul class='list-group-item active'>"+city+"</ul>");
-    // } else {
-    //     cityEl = $("<ul class='list-group-item'>"+city+"</ul>");
-    // }
-    // $("#city-save").append(cityEl); // fixed this had city list instead of city save still varialbles are null.
-//         }
-//     }   
-// }
 getcities();
 
 
-        
-     
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-//function to get the weather data then take response and jsonify it
-function getWeather(city) {
-    var queryURL = weatherAPI + city + weatherAPIKey;
-    console.log(queryURL);
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function(response) {
-        console.log(response);
-        var weatherData = response;
-        console.log(weatherData);
-        displayWeather(weatherData);
-    }
-    )
-}
-
-
+// button event listener for city-save from local storage 
+$("#city-save").on("click", ".city-button", function(event) {
+    event.preventDefault();
+    var city = $(this).attr("data-name");
+    console.log(city);
+    // working passing which button is clicked in list to console
+})
