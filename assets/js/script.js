@@ -20,11 +20,18 @@ console.log(weatherAPI)
 $(".btn-info").on("click", function(event) {
     event.preventDefault();
     var city = $("#search-input").val();
-    
     logCity(city);
     getWeather(city);
 }
 )
+// button event listener for city-save from local storage 
+$("#city-save").on("click", ".city-button", function(event) {
+    event.preventDefault();
+    var city = $(this).attr("data-name");
+    console.log(city);
+    // working passing which button is clicked in list to console
+    getWeather(city);
+})
 
 
 
@@ -79,16 +86,62 @@ var getcities =() => {
         }
     }
 }
-
-
 getcities();
 
 
-
-// button event listener for city-save from local storage 
-$("#city-save").on("click", ".city-button", function(event) {
-    event.preventDefault();
-    var city = $(this).attr("data-name");
-    console.log(city);
-    // working passing which button is clicked in list to console
+// function to get current weather for city
+var getWeather = (city) => {
+    let queryURL = weatherAPI + city + weatherAPIKey;
+    console.log(queryURL); // logs https://api.openweathermap.org/data/2.5/weather?q=Las Vegas&appid=d12e589f389b69a0b72ac61ad3e26448 and shows it is requesting right.
+    fetch(queryURL)
+    
+    .then(response => {
+        return response.json();
 })
+    .then((response => {
+        console.log(response);
+        // gets response -- current log
+// {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 10000, …}
+// base: "stations"
+// clouds:
+// all: 0
+// [[Prototype]]: Object
+// cod: 200
+// coord:
+// lat: 36.175
+// lon: -115.1372
+// [[Prototype]]: Object
+// dt: 1658442455
+// id: 5506956
+// main:
+// feels_like: 314.58
+// humidity: 9
+// pressure: 1008
+// temp: 317.87
+// temp_max: 318.86
+// temp_min: 316.35
+// [[Prototype]]: Object
+// name: "Las Vegas"
+// sys:
+// country: "US"
+// id: 6171
+// sunrise: 1658407141
+// sunset: 1658458472
+// type: 1
+// [[Prototype]]: Object
+// timezone: -25200
+// visibility: 10000
+// weather: Array(1)
+// 0: {id: 800, main: 'Clear', description: 'clear sky', icon: '01d'}
+// length: 1
+// [[Prototype]]: Array(0)
+// wind:
+// deg: 210
+// gust: 10.29
+// speed: 6.17
+// [[Prototype]]: Object
+// [[Prototype]]: Object
+    }
+    )   
+    )
+}
