@@ -3,7 +3,7 @@
 
 // https://openweathermap.org/api/one-call-api
 
-// https://api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
+// https://api.openweathermap.org/data/2.5/weather?q={city name}&units=imperial&appid={API key}
 // For temperature in Fahrenheit and wind speed in miles/hour, use units=imperial
 
 // weather api connection 
@@ -102,6 +102,17 @@ var getWeather = (city) => {
 })
     .then((response => {
         console.log(response);
+        $('#header-text').text(response.name);// name: "Las Vegas"
+        // need time 
+        var nowtime = response.dt;
+        console.log(nowtime); // 1658509568 response  seems to be unix timestamp need to convert to time
+        var nowMoment = moment.unix(nowtime).utc();
+        console.log(nowMoment); // nothing
+
+        
+        
+
+
         // gets response -- current log updated with imperial units 
         // {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 10000, …}
         // base: "stations"
