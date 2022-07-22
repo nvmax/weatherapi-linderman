@@ -105,7 +105,7 @@ var getWeather = (city) => {
         // need time 
         var nowtime = response.dt;
         console.log(nowtime); // 1658509568 response  seems to be unix timestamp need to convert to time
-        var nowMoment = moment.unix(nowtime).utc();
+        var nowMoment = moment.unix(nowtime).format("MM/DD/YYYY");
         console.log(nowMoment); // nothing shows up
     
     
