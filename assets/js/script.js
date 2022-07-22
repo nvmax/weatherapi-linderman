@@ -102,14 +102,27 @@ var getWeather = (city) => {
 })
     .then((response => {
         console.log(response);
-        $('#header-text').text(response.name);// name: "Las Vegas"
         // need time 
         var nowtime = response.dt;
         console.log(nowtime); // 1658509568 response  seems to be unix timestamp need to convert to time
         var nowMoment = moment.unix(nowtime).utc();
-        console.log(nowMoment); // nothing
+        console.log(nowMoment); // nothing shows up
+    
+    
+    
+    
+    
+        //  https://stackoverflow.com/a/70418266/6238337
 
-        
+    //    var date = d.toISOString();
+    //    var targetTime = new Date(date);
+    //    var timeZoneFromDB = offset; //time zone value from database
+    //    //get the timezone offset from local time in minutes
+    //    var tzDifference = timeZoneFromDB * 60 + targetTime.getTimezoneOffset();
+    //    //convert the offset to milliseconds, add to targetTime, and make a new Date
+    //    var offsetTime = new Date(targetTime.getTime() + tzDifference * 60 * 1000);
+    //    return offsetTime;
+    //  } 
         
 
 
