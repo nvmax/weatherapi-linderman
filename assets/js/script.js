@@ -105,24 +105,26 @@ var getWeather = (city) => {
         // need time 
         var nowtime = response.dt;
         console.log(nowtime); // 1658509568 response  seems to be unix timestamp need to convert to time
+            // Garrett Lockhart
+            // moment.unix(value).format("MM/DD/YYYY");
         var nowMoment = moment.unix(nowtime).format("MM/DD/YYYY");
-        console.log(nowMoment); // nothing shows up
+        console.log(nowMoment); // now gets current date
+        // need to create html elements for temp, weather icon, humidity, wind speed, and UV index
+        var temp = response.main.temp;
+        console.log(temp); // temp is in fahrenheit
+        var humidity = response.main.humidity;
+        console.log(humidity); // humidity is in percent
+        var windSpeed = response.wind.speed;
+        console.log(windSpeed); // wind speed is in miles per hour
+        var uvIndex = response.uvi;
+        console.log(uvIndex); // undefined  because uv index is not in response need to create a call to https://api.openweathermap.org/data/2.5/uvi
+        var weatherIcon = response.weather[0].icon;
+        console.log(weatherIcon); // 01d - need to add this to the img tag and .png to the end
+    }))}    
     
     
     
-    
-    
-        //  https://stackoverflow.com/a/70418266/6238337
 
-    //    var date = d.toISOString();
-    //    var targetTime = new Date(date);
-    //    var timeZoneFromDB = offset; //time zone value from database
-    //    //get the timezone offset from local time in minutes
-    //    var tzDifference = timeZoneFromDB * 60 + targetTime.getTimezoneOffset();
-    //    //convert the offset to milliseconds, add to targetTime, and make a new Date
-    //    var offsetTime = new Date(targetTime.getTime() + tzDifference * 60 * 1000);
-    //    return offsetTime;
-    //  } 
         
 
 
@@ -167,7 +169,3 @@ var getWeather = (city) => {
         // speed: 16.11
         // [[Prototype]]: Object
         // [[Prototype]]: Object
-    }
-    )   
-    )
-}
