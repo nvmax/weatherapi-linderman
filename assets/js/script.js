@@ -8,7 +8,7 @@
 
 // weather api connection 
 var weatherAPI= "https://api.openweathermap.org/data/2.5/weather?q="
-var weatherAPIKey = "&appid=d12e589f389b69a0b72ac61ad3e26448"
+var weatherAPIKey = "d12e589f389b69a0b72ac61ad3e26448"
 var savedCity ="";
 var loadedcity = "";
 console.log(weatherAPI)
@@ -93,7 +93,7 @@ getcities();
 // function to get current weather for city
 
 var getWeather = (city) => {
-    let queryURL = weatherAPI + city +"&units=imperial"+ weatherAPIKey;
+    let queryURL = weatherAPI + city +"&units=imperial&appid="+ weatherAPIKey;
     console.log(queryURL); // logs https://api.openweathermap.org/data/2.5/weather?q=Las Vegas&appid=d12e589f389b69a0b72ac61ad3e26448 and shows it is requesting right.
     fetch(queryURL)
     
@@ -120,8 +120,44 @@ var getWeather = (city) => {
         console.log(uvIndex); // undefined  because uv index is not in response need to create a call to https://api.openweathermap.org/data/2.5/uvi
         var weatherIcon = response.weather[0].icon;
         console.log(weatherIcon); // 01d - need to add this to the img tag and .png to the end
-    }))}    
-    
+        var WeatherIcon="https://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+        var WeatherHTML = `
+        <h3>${response.name} ${nowMoment}<img src="${WeatherIcon}"></h3>
+        <ul class="list">
+            <li>Temperature: ${temp}&#8457;</li>
+            <li>Humidity: ${humidity}%</li>
+            <li>Wind Speed: ${windSpeed} mph</li>
+        </ul>`;
+        $('#current-weather').html(WeatherHTML);
+
+        // need uvi options and values 
+        var lat = response.coord.lat;
+        console.log(lat); // returns 36.175
+        var lon = response.coord.lon;
+        console.log(lon); // returns -115.1372
+        //var weatherAPIKey = "d12e589f389b69a0b72ac61ad3e26448"
+        var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=d12e589f389b69a0b72ac61ad3e26448&lat=" + lat + "&lon=" + lon;
+        console.log(uvURL); 
+        fetch(uvURL)
+        .then(response => {
+            console.log(response);
+            return response.json();
+        })
+        .then((response) => {
+            let uvIndex = response.value;
+            console.log(uvIndex);
+            // appends uv-index to current list
+            var uvHTML = `
+            <li id="uv-index">UV-Index: ${uvIndex}</li>`;
+            $('.list').append(uvHTML); // working adds uv index to the list correctly
+            
+            
+        }
+        )
+            
+        })  
+    )}
+  
     
     
 
