@@ -151,13 +151,15 @@ var getWeather = (city) => {
             // https://stackoverflow.com/q/52917041/6238337
             // using https://www.epa.gov/sites/default/files/documents/uviguide.pdf to get uv index values
             $("#uvIndex").html(`UV-Index: <span id="uvI"> ${uvIndex}</span>`);
+            // need to figure out how to compaire less than number but greater than number 
+                // https://stackoverflow.com/a/8236858/6238337
             if (uvIndex < 2) {
                 $("#uvI").attr("class", "uvLow");
-            } else if (uvIndex < 5) {
+            } else if (uvIndex <= 5) {
                 $("#uvI").attr("class", "uvModerate");
-            } else if (uvIndex < 7) {
+            } else if (uvIndex <= 7) {
                 $("#uvI").attr("class", "uvHigh");
-            } else if (uvIndex < 10) {
+            } else if (uvIndex >= 10) {
                 $("#uvI").attr("class", "uvVeryhigh");
             } else if (uvIndex >= 11) {
                 $("#uvI").attr("class", "uvExtrme");
