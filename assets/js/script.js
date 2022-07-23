@@ -47,6 +47,7 @@ $(".btn-info").on("click", function(event) {
     logCity(city);
     getcities(city);
     getWeather(city);
+    fiveDay(city);
 }});
 
 // button event listener for city-save from local storage 
@@ -57,6 +58,7 @@ $("#city-save").on("click", ".city-button", function(event) {
     // working passing which button is clicked in list to console
     getWeather(city);
     getcities(city);
+    fiveDay(city);
 });
 
 
@@ -77,6 +79,7 @@ function logCity(city) {
     }
     console.log(cityList);
     getcities(cityList);
+    fiveDay(cityList);
 }  
 
 
@@ -158,8 +161,8 @@ var getWeather = (city) => {
         <h3>${response.name} ${nowMoment}<img src="${WeatherIcon}"></h3>
         <ul class="list">
             <li>Temperature: ${temp}&#8457;</li>
-            <li>Humidity: ${humidity}%</li>
             <li>Wind Speed: ${windSpeed} mph</li>
+            <li>Humidity: ${humidity}%</li>
             <li id="uvIndex">UV-Index: </li>
         </ul>`;
         $('#current-weather').html(WeatherHTML);
@@ -196,10 +199,64 @@ var getWeather = (city) => {
                 $("#uvI").attr("class", "uvVeryhigh");
             } else if (uvIndex >=10 && uvIndex < 17) {
                 $("#uvI").attr("class", "uvExtrme");
-                // some work some dont anything 10 is not working 
+                // now working.
             }
         })
     })
     )
 }
 // 5 day forcast  need to city sent into it
+var fiveDay = (city) => {
+    console.log(city);
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&APPID=" + weatherAPIKey ;
+    console.log(queryURL);
+    fetch(queryURL)
+    
+        .then((response) => {
+            return response.json();
+        })
+        .then((response) => {
+            // from response get response.list and output to console.
+           for (var i = 0; i < response.list.length; i++) {
+               var day = response.list[i];
+               console.log(day);
+     
+           }
+
+
+            
+
+       
+        })}
+
+// response from 5day forcast 40 days out!
+// {dt: 1658620800, main: {…}, weather: Array(1), clouds: {…}, wind: {…}, …}
+// clouds:
+// all: 40
+// [[Prototype]]: Object
+// dt: 1658620800
+// dt_txt: "2022-07-24 00:00:00"
+// main:
+// feels_like: 94.96
+// grnd_level: 873
+// humidity: 22
+// pressure: 1014
+// sea_level: 1014
+// temp: 97.48
+// temp_kf: 1.05
+// temp_max: 97.48
+// temp_min: 95.59
+// [[Prototype]]: Object
+// pop: 0
+// sys:
+// pod: "d"
+// [[Prototype]]: Object
+// visibility: 10000
+// weather: Array(1)
+// 0: {id: 802, main: 'Clouds', description: 'scattered clouds', icon: '03d'}
+// length: 1
+// [[Prototype]]: Array(0)
+// wind:
+// deg: 324
+// gust: 11.3
+// speed: 8.61
