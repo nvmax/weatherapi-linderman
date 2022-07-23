@@ -13,18 +13,42 @@ var savedCity ="";
 var loadedcity = "";
 console.log(weatherAPI)
 
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
 
+function errorcall(){
+    modal.style.display = "block";
+}
 
+span.onclick = function() {
+    modal.style.display = "none";
+}
 
+window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+} 
+// clear search-input on click 
+$("#search-input").on("click", function() {
+    $(this).val("");
+    }
+)
 
 // gets text from id="search-input" on btn-info click and pass value to logCity function
 $(".btn-info").on("click", function(event) {
     event.preventDefault();
+    // checks if input is empty else continues
+    if ($("#search-input").val() === "") {
+        // open modal       
+        errorcall();       
+    } else {
     var city = $("#search-input").val();
     logCity(city);
+    getcities(city);
     getWeather(city);
-}
-)
+}});
+
 // button event listener for city-save from local storage 
 $("#city-save").on("click", ".city-button", function(event) {
     event.preventDefault();
@@ -32,7 +56,8 @@ $("#city-save").on("click", ".city-button", function(event) {
     console.log(city);
     // working passing which button is clicked in list to console
     getWeather(city);
-})
+    getcities(city);
+});
 
 
 
@@ -40,6 +65,8 @@ $("#city-save").on("click", ".city-button", function(event) {
 // need function to see if its already in the list and if not add it
 // may need to break out each cit into its own list item in storage
 function logCity(city) {
+    // clear items in city-list before adding new city
+    $("#city-save").empty();
     var cityList = JSON.parse(localStorage.getItem("cityList"));
     if (cityList === null) {
         cityList = [];
@@ -49,29 +76,35 @@ function logCity(city) {
         localStorage.setItem("cityList", JSON.stringify(cityList));
     }
     console.log(cityList);
-    displayCities(cityList);
-}  // works - checked shows ["Las Vegas", "Minneapolis "] 0: "Las Vegas" 1: "Minneapolis " used Las Vegas twice but only recorded once
+    getcities(cityList);
+}  
 
 
 
 
 // function to parse data from local storage city list
 var getcities =() => {
-    $("#city-list").empty();
+    $("#city-save").empty();
     // if local storage is empty, return empty array
     if (localStorage.length === 0) {
-        if (savedCity){
-            $("search-input").attr("value", savedCity);
-        } else {
-            $("search-input").attr("value", "Minneapolis"); // not working not sure why!
+        // store value from search-input in local storage with value of citylist if not empty append to list
+        var cityList = JSON.parse(localStorage.getItem("cityList"));
+        if (cityList === null) {
+            cityList = [];
         }
+        console.log(cityList);
+            getWeather(city);
+        
     }else {
         // need to get city written fom local storage
         // using info from scott casey from class, still not working
         // issue maybe from using city-list instead of key of storagelist
         // rewrote section below to parse each item from citylist
+        
         var cityList = JSON.parse(localStorage.getItem("cityList"));
-        console.log(cityList); // (3) ['Las Vegas', 'Minneapolis ', 'salt lake city']
+        // set search-input to first city in local storage 
+        $("#search-input").val(cityList[0]);
+        console.log(cityList); 
         for (var i = 0; i < cityList.length; i++) {
             var city = cityList[i];
             console.log(city); // each are listed individually
@@ -153,23 +186,20 @@ var getWeather = (city) => {
             $("#uvIndex").html(`UV-Index: <span id="uvI"> ${uvIndex}</span>`);
             // need to figure out how to compaire less than number but greater than number 
                 // https://stackoverflow.com/a/8236858/6238337
-            if (uvIndex < 2) {
+            if (uvIndex >= 0 && uvIndex < 2) {
                 $("#uvI").attr("class", "uvLow");
-            } else if (uvIndex <= 5) {
+            } else if (uvIndex >= 2 && uvIndex < 5) {
                 $("#uvI").attr("class", "uvModerate");
-            } else if (uvIndex <= 7) {
+            } else if (uvIndex >= 5 && uvIndex < 7) {
                 $("#uvI").attr("class", "uvHigh");
-            } else if (uvIndex >= 10) {
+            } else if (uvIndex >= 7 && uvIndex < 10) {
                 $("#uvI").attr("class", "uvVeryhigh");
-            } else if (uvIndex >= 11) {
+            } else if (uvIndex >=10 && uvIndex < 17) {
                 $("#uvI").attr("class", "uvExtrme");
                 // some work some dont anything 10 is not working 
             }
-
-           
-        
         })
-    }))
-
+    })
+    )
 }
-
+// 5 day forcast  need to city sent into it
