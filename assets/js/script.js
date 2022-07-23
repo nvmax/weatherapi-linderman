@@ -127,6 +127,7 @@ var getWeather = (city) => {
             <li>Temperature: ${temp}&#8457;</li>
             <li>Humidity: ${humidity}%</li>
             <li>Wind Speed: ${windSpeed} mph</li>
+            <li id="uvIndex">UV-Index: </li>
         </ul>`;
         $('#current-weather').html(WeatherHTML);
 
@@ -146,70 +147,18 @@ var getWeather = (city) => {
         .then((response) => {
             let uvIndex = response.value;
             console.log(uvIndex);
-            // appends uv-index to current list
-            var uvHTML = `
-            <li id="uv-index">UV-Index: ${uvIndex}</li>`;
-            $('.list').append(uvHTML); // working adds uv index to the list correctly
-           // trying to add color to uv index
-              $('#uvIndex').html(`UV Index: <span id="uvVal"> ${uvIndex}</span>`);
-              if (uvIndex > 3) {
-                $('#ivalue').attr('class', 'uv-index-high');
-            } // not working
-             
+            // using
+            $("#uvIndex").text("UV-Index: " + uvIndex); // not adding a line item  but adds text to the li
+            if (uvIndex > 3) {
+                
+                $("#uvIndex").attr("class", "uvlight"); // works need to apply to UV-Index only not span the hole box 
 
-              
-            
-            
-        }
-        )
-            
-        })  
-    )}
-  
-    
-    
-
+                
+            }
+           
         
+        })
+    }))
 
+}
 
-        // gets response -- current log updated with imperial units 
-        // {coord: {…}, weather: Array(1), base: 'stations', main: {…}, visibility: 10000, …}
-        // base: "stations"
-        // clouds:
-        // all: 0
-        // [[Prototype]]: Object
-        // cod: 200
-        // coord:
-        // lat: 36.175
-        // lon: -115.1372
-        // [[Prototype]]: Object
-        // dt: 1658445999
-        // id: 5506956
-        // main:
-        // feels_like: 106.43
-        // humidity: 9
-        // pressure: 1007
-        // temp: 112.35
-        // temp_max: 114.28
-        // temp_min: 108.82
-        // [[Prototype]]: Object
-        // name: "Las Vegas"
-        // sys:
-        // country: "US"
-        // id: 6171
-        // sunrise: 1658407141
-        // sunset: 1658458472
-        // type: 1
-        // [[Prototype]]: Object
-        // timezone: -25200
-        // visibility: 10000
-        // weather: Array(1)
-        // 0: {id: 800, main: 'Clear', description: 'clear sky', icon: '01d'}
-        // length: 1
-        // [[Prototype]]: Array(0)
-        // wind:
-        // deg: 210
-        // gust: 24.16
-        // speed: 16.11
-        // [[Prototype]]: Object
-        // [[Prototype]]: Object
