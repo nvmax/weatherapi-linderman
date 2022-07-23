@@ -136,7 +136,7 @@ var getWeather = (city) => {
         var lon = response.coord.lon;
         console.log(lon); // returns -115.1372
         //var weatherAPIKey = "d12e589f389b69a0b72ac61ad3e26448"
-        var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=d12e589f389b69a0b72ac61ad3e26448&lat=" + lat + "&lon=" + lon;
+        var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + weatherAPIKey + "&lat=" + lat + "&lon=" + lon;
         console.log(uvURL); 
         fetch(uvURL)
         .then(response => {
@@ -150,6 +150,14 @@ var getWeather = (city) => {
             var uvHTML = `
             <li id="uv-index">UV-Index: ${uvIndex}</li>`;
             $('.list').append(uvHTML); // working adds uv index to the list correctly
+           // trying to add color to uv index
+              $('#uvIndex').html(`UV Index: <span id="uvVal"> ${uvIndex}</span>`);
+              if (uvIndex > 3) {
+                $('#ivalue').attr('class', 'uv-index-high');
+            } // not working
+             
+
+              
             
             
         }
