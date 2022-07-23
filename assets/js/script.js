@@ -147,14 +147,23 @@ var getWeather = (city) => {
         .then((response) => {
             let uvIndex = response.value;
             console.log(uvIndex);
-            // using
-            $("#uvIndex").text("UV-Index: " + uvIndex); // not adding a line item  but adds text to the li
-            if (uvIndex > 3) {
-                
-                $("#uvIndex").attr("class", "uvlight"); // works need to apply to UV-Index only not span the hole box 
-
-                
+            // https://www.geeksforgeeks.org/jquery-change-the-text-of-a-span-element/  set content
+            // https://stackoverflow.com/q/52917041/6238337
+            // using https://www.epa.gov/sites/default/files/documents/uviguide.pdf to get uv index values
+            $("#uvIndex").html(`UV-Index: <span id="uvI"> ${uvIndex}</span>`);
+            if (uvIndex < 2) {
+                $("#uvI").attr("class", "uvLow");
+            } else if (uvIndex < 5) {
+                $("#uvI").attr("class", "uvModerate");
+            } else if (uvIndex < 7) {
+                $("#uvI").attr("class", "uvHigh");
+            } else if (uvIndex < 10) {
+                $("#uvI").attr("class", "uvVeryhigh");
+            } else if (uvIndex >= 11) {
+                $("#uvI").attr("class", "uvExtrme");
+                // some work some dont anything 10 is not working 
             }
+
            
         
         })

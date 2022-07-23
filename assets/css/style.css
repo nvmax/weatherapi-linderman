@@ -16,20 +16,32 @@
   background-color: #17a2b8;
 }
 
-.uvlight{
+.uvLow{
     background-color: green;
     border-radius: 5px;
     color: white;
 }
 
-.uvmedium{
+.uvModerate{
+    background-color: yellow;
+    border-radius: 5px;
+    color: white;
+}
+
+.uvHigh{
     background-color: orange;
     border-radius: 5px;
     color: white;
 }
 
-.uvhigh{
+.uvVeryhigh{
     background-color: red;
+    border-radius: 5px;
+    color: white;
+}
+
+.uvExtrme{
+    background-color: purple;
     border-radius: 5px;
     color: white;
 }
