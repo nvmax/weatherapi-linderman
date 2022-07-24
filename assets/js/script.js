@@ -207,6 +207,7 @@ var getWeather = (city) => {
 }
 // 5 day forcast  need to city sent into it
 var fiveDay = (city) => {
+    $("#five-day").empty();
     console.log(city);
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial" + "&APPID=" + weatherAPIKey ;
     console.log(queryURL);
@@ -216,47 +217,31 @@ var fiveDay = (city) => {
             return response.json();
         })
         .then((response) => {
-            // from response get response.list and output to console.
+           
+            // https://stackoverflow.com/q/48761562/6238337 - I need to check for miday of a time slot against array of days
+            //  loop over response.list and create 5 day forcast
            for (var i = 0; i < response.list.length; i++) {
                var day = response.list[i];
-               console.log(day);
-     
-           }
+               // sort arrays by time with 12:00:00
+                if (day.dt_txt.includes("12:00:00")) {
+                    var weatherIcon = day.weather[0].icon;
+                    var WeatherIcon="https://openweathermap.org/img/w/" + weatherIcon + ".png";
+                    var temp = day.main.temp;
+                    var humidity = day.main.humidity;
+                    var dayMoment = moment.unix(day.dt).format("MM/DD/YYYY");
+                    var dayHTML = `
+                    <div class="day">
+                        <h3>${dayMoment}</h3>
+                        <img src="${WeatherIcon}">
+                        <p>Temperature: ${temp}&#8457;</p>
+                        <p>Humidity: ${humidity}%</p>
+                    </div>`;
+                    $('#five-day').append(dayHTML);
+                }
+              }
+
+        })
+}
 
 
-            
 
-       
-        })}
-
-// response from 5day forcast 40 days out!
-// {dt: 1658620800, main: {…}, weather: Array(1), clouds: {…}, wind: {…}, …}
-// clouds:
-// all: 40
-// [[Prototype]]: Object
-// dt: 1658620800
-// dt_txt: "2022-07-24 00:00:00"
-// main:
-// feels_like: 94.96
-// grnd_level: 873
-// humidity: 22
-// pressure: 1014
-// sea_level: 1014
-// temp: 97.48
-// temp_kf: 1.05
-// temp_max: 97.48
-// temp_min: 95.59
-// [[Prototype]]: Object
-// pop: 0
-// sys:
-// pod: "d"
-// [[Prototype]]: Object
-// visibility: 10000
-// weather: Array(1)
-// 0: {id: 802, main: 'Clouds', description: 'scattered clouds', icon: '03d'}
-// length: 1
-// [[Prototype]]: Array(0)
-// wind:
-// deg: 324
-// gust: 11.3
-// speed: 8.61
