@@ -7,9 +7,11 @@ function init() {
         getWeather(city);
     }
     else {
-        // get first item in local storage citylist and send to getWeather
+        // get last item in local storage citylist and send to getWeather
         var cityList = JSON.parse(localStorage.getItem("cityList"));
-        var city = cityList[0];
+        var city = cityList[cityList.length - 1];
+        // replace search-input with last item in local storage citylist
+        $("#search-input").val(city);
         getWeather(city);
     }
 }
@@ -22,10 +24,18 @@ var weatherAPI = "https://api.openweathermap.org/data/2.5/weather?q="
 var weatherAPIKey = "d12e589f389b69a0b72ac61ad3e26448"
 var savedCity = "";
 var loadedcity = "";
-console.log(weatherAPI)
-
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
+
+
+// keyboard enter event to pass search-input value to getWeather
+$("#search-input").keypress(function (event) {
+    if (event.which == 13) {
+        var city = $("#search-input").val();
+        logCity(city);
+        init();
+    }
+});
 
 function errorcall() {
     modal.style.display = "block";
@@ -40,11 +50,11 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 }
+
 // clear search-input on click 
 $("#search-input").on("click", function () {
     $(this).val("");
-}
-);
+});
 
 // gets text from id="search-input" on btn-info click and pass value to logCity function
 $(".btn-info").on("click", function (event) {
@@ -59,7 +69,6 @@ $(".btn-info").on("click", function (event) {
         logCity(city);
         getcities(city);
         getWeather(city);
-
     }
 });
 
@@ -67,14 +76,14 @@ $(".btn-info").on("click", function (event) {
 $("#city-save").on("click", ".city-button", function (event) {
     event.preventDefault();
     var city = $(this).attr("data-name");
-    console.log(city);
     // working passing which button is clicked in list to console
     getWeather(city);
     getcities();
+    // send name of the citybutton clicked to search-input
+    $("#search-input").val(city);
+
 
 });
-
-
 
 //function to log city name to local storage every time btn-info is clicked and append to list of cities 
 // need function to see if its already in the list and if not add it
@@ -90,13 +99,8 @@ function logCity(city) {
         cityList.push(city);
         localStorage.setItem("cityList", JSON.stringify(cityList));
     }
-    console.log(cityList);
     getcities(cityList);
-
 }
-
-
-
 
 // function to parse data from local storage city list
 function getcities() {
@@ -108,7 +112,6 @@ function getcities() {
         if (cityList === null) {
             cityList = [];
         }
-        console.log(cityList);
         getWeather(city);
 
     } else {
@@ -120,10 +123,8 @@ function getcities() {
         var cityList = JSON.parse(localStorage.getItem("cityList"));
         // set search-input to first city in local storage 
         $("#search-input").val(cityList[0]);
-        console.log(cityList);
         for (var i = 0; i < cityList.length; i++) {
             var city = cityList[i];
-            console.log(city); // each are listed individually
             // create buttons for each item in city and append to city-save <ul>
             var cityButton = $("<button>");
             cityButton.addClass("city-button");
@@ -139,37 +140,24 @@ function getcities() {
 }
 getcities();
 
-
 // function to get current weather for city
-
 function getWeather(city) {
     let queryURL = weatherAPI + city + "&units=imperial&appid=" + weatherAPIKey;
-    console.log(queryURL);
     fetch(queryURL)
 
         .then(response => {
             return response.json();
         })
         .then((response => {
-            console.log(response);
             // need time 
             var nowtime = response.dt;
-            console.log(nowtime); // 1658509568 response  seems to be unix timestamp need to convert to time
             // Garrett Lockhart
             // moment.unix(value).format("MM/DD/YYYY");
             var nowMoment = moment.unix(nowtime).format("MM/DD/YYYY");
-            console.log(nowMoment); // now gets current date
             // need to create html elements for temp, weather icon, humidity, wind speed, and UV index
             var temp = response.main.temp;
-            console.log(temp); // temp is in fahrenheit
             var humidity = response.main.humidity;
-            console.log(humidity); // humidity is in percent
             var windSpeed = response.wind.speed;
-            console.log(windSpeed); // wind speed is in miles per hour
-            var uvIndex = response.uvi;
-            console.log(uvIndex); // undefined  because uv index is not in response need to create a call to https://api.openweathermap.org/data/2.5/uvi
-            var weatherIcon = response.weather[0].icon;
-            console.log(weatherIcon); // 01d - need to add this to the img tag and .png to the end
             var WeatherIcon = "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
             var WeatherHTML = `
         <h3>${response.name} ${nowMoment}<img src="${WeatherIcon}"></h3>
@@ -180,24 +168,19 @@ function getWeather(city) {
             <li id="uvIndex">UV-Index: </li>
         </ul>`;
             $('#current-weather').html(WeatherHTML);
-
+            
             // need uvi options and values 
             var lat = response.coord.lat;
-            console.log(lat); // returns 36.175
             var lon = response.coord.lon;
             fiveDay(lon, lat)
-            console.log(lon); // returns -115.1372
             //var weatherAPIKey = "d12e589f389b69a0b72ac61ad3e26448"
             var uvURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + weatherAPIKey + "&lat=" + lat + "&lon=" + lon;
-            console.log(uvURL);
             fetch(uvURL)
                 .then(response => {
-                    console.log(response);
                     return response.json();
                 })
                 .then((response) => {
                     let uvIndex = response.value;
-                    console.log(uvIndex);
                     // https://www.geeksforgeeks.org/jquery-change-the-text-of-a-span-element/  set content
                     // https://stackoverflow.com/q/52917041/6238337
                     // using https://www.epa.gov/sites/default/files/documents/uviguide.pdf to get uv index values
@@ -216,17 +199,14 @@ function getWeather(city) {
                     }
                 })
         })
-        )
+        )      
 }
+
 // 5 day forcast  need to city sent into it
 // Thanks to Scott Casey for helping me with this section using onecall and getting day.temp.max
 var fiveDay = (lon, lat) => {
-    console.log(lon);
-    console.log(lat);
     $("#five-day").empty();
-    console.log(lon, lat);
     var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&units=imperial&lon=" + lon + "&appid=" + weatherAPIKey;
-    console.log(queryURL);
     fetch(queryURL)
         .then((response) => {
             return response.json();
@@ -237,20 +217,13 @@ var fiveDay = (lon, lat) => {
                 <h2>5-Day Forecast:</h2>
                 <div id="fiveday" class="d-inline-flex flex-wrap">`;
             var fiveDay = response.daily;
-            console.log(fiveDay);
             for (var i = 1; i < 6; i++) {
                 var day = fiveDay[i];
-                console.log(day);
                 var dayMoment = moment.unix(day.dt).format("MM/DD/YYYY");
-                console.log(dayMoment);
                 var temp = day.temp.max;
-                console.log(temp);
                 var windSpeed = day.wind_speed;
-                console.log(windSpeed);
                 var humidity = day.humidity;
-                console.log(humidity);
                 var weatherIcon = day.weather[0].icon;
-                console.log(weatherIcon);
                 var WeatherIcon = "https://openweathermap.org/img/w/" + weatherIcon + ".png";
                 // if all data is retrieved then create weatherHTML elements
                 if (dayMoment && temp && humidity && weatherIcon) {

@@ -82,6 +82,7 @@
 .close {
     color: #aaa;
     float: right;
+    float: top-right;
     font-size: 28px;
     font-weight: bold;
 }
