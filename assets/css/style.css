@@ -35,35 +35,21 @@
     text-align: left;
     font-size: .8em;
 }
-/* WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe */
-/*  need to rework these */
-.uvLow{
+
+.uvFavorable{
     background-color: green;
     border-radius: 5px;
     color: white;
 }
 
 .uvModerate{
-    background-color: yellow;
-    border-radius: 5px;
-    color: white;
-}
-
-.uvHigh{
     background-color: orange;
     border-radius: 5px;
     color: white;
 }
 
-.uvVeryhigh{
+.uvSevere{
     background-color: red;
-    border-radius: 5px;
-    color: white;
-}
-
-.uvExtrme{
-    background-color: purple;
     border-radius: 5px;
     color: white;
 }

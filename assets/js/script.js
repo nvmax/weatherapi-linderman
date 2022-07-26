@@ -206,17 +206,13 @@ function getWeather(city) {
                     $("#uvI").css("padding-right", `${uvIndex * 2}px`);
                     // used info below to compair number for great than to less than and vice versa
                     // https://stackoverflow.com/a/8236858/6238337
-                    if (uvIndex >= 0 && uvIndex < 2) {
-                        $("#uvI").attr("class", "uvLow");
-                    } else if (uvIndex >= 2 && uvIndex < 5) {
+                    if (uvIndex >= 0 && uvIndex < 5) {
+                        $("#uvI").attr("class", "uvFavorable");
+                    } else if (uvIndex >= 5 && uvIndex < 10) {
                         $("#uvI").attr("class", "uvModerate");
-                    } else if (uvIndex >= 5 && uvIndex < 7) {
-                        $("#uvI").attr("class", "uvHigh");
-                    } else if (uvIndex >= 7 && uvIndex < 10) {
-                        $("#uvI").attr("class", "uvVeryhigh");
                     } else if (uvIndex >= 10 && uvIndex < 17) {
-                        $("#uvI").attr("class", "uvExtrme");
-                        // now working.
+                        $("#uvI").attr("class", "uvSevere");
+                    
                     }
                 })
         })
